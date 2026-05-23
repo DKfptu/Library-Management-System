@@ -1,1 +1,512 @@
-# Library-Management-System
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class LibraryManagementSystem {
+
+    static Scanner sc = new Scanner(System.in);
+
+    // ===== BOOK DATA =====
+    static ArrayList<String> bookIds = new ArrayList<>();
+    static ArrayList<String> bookTitles = new ArrayList<>();
+    static ArrayList<String> bookAuthors = new ArrayList<>();
+    static ArrayList<String> bookGenres = new ArrayList<>();
+    static ArrayList<Integer> bookYears = new ArrayList<>();
+    static ArrayList<Integer> bookStocks = new ArrayList<>();
+    static ArrayList<Integer> borrowCounts = new ArrayList<>();
+
+    // ===== MEMBER DATA =====
+    static ArrayList<String> memberIds = new ArrayList<>();
+    static ArrayList<String> memberNames = new ArrayList<>();
+    static ArrayList<String> memberPhones = new ArrayList<>();
+    static ArrayList<String> memberEmails = new ArrayList<>();
+    static ArrayList<Integer> memberBorrowed = new ArrayList<>();
+
+    // ===== BORROW DATA =====
+    static ArrayList<String> borrowBookIds = new ArrayList<>();
+    static ArrayList<String> borrowMemberIds = new ArrayList<>();
+    static ArrayList<String> borrowDates = new ArrayList<>();
+    static ArrayList<String> returnDates = new ArrayList<>();
+    static ArrayList<Boolean> returned = new ArrayList<>();
+
+    public static void main(String[] args) {
+
+        int choice;
+
+        do {
+            System.out.println("\n===== LIBRARY MANAGEMENT SYSTEM =====");
+            System.out.println("1. Manage Books");
+            System.out.println("2. Manage Members");
+            System.out.println("3. Borrow / Return Books");
+            System.out.println("4. Reports");
+            System.out.println("0. Exit");
+            System.out.print("Choose: ");
+            choice = sc.nextInt();
+            sc.nextLine();
+
+            switch (choice) {
+                case 1:
+                    manageBooks();
+                    break;
+                case 2:
+                    manageMembers();
+                    break;
+                case 3:
+                    borrowingMenu();
+                    break;
+                case 4:
+                    reportsMenu();
+                    break;
+                case 0:
+                    System.out.println("Exit program!");
+                    break;
+                default:
+                    System.out.println("Invalid choice!");
+            }
+
+        } while (choice != 0);
+    }
+
+    // ================= BOOK MENU =================
+    static void manageBooks() {
+
+        int choice;
+
+        do {
+            System.out.println("\n===== BOOK MANAGEMENT =====");
+            System.out.println("1. Add Book");
+            System.out.println("2. View Books");
+            System.out.println("3. Search Book");
+            System.out.println("4. Update Book");
+            System.out.println("5. Remove Book");
+            System.out.println("0. Back");
+            System.out.print("Choose: ");
+            choice = sc.nextInt();
+            sc.nextLine();
+
+            switch (choice) {
+                case 1:
+                    addBook();
+                    break;
+                case 2:
+                    viewBooks();
+                    break;
+                case 3:
+                    searchBook();
+                    break;
+                case 4:
+                    updateBook();
+                    break;
+                case 5:
+                    removeBook();
+                    break;
+            }
+
+        } while (choice != 0);
+    }
+
+    static void addBook() {
+
+        System.out.print("Book ID: ");
+        String id = sc.nextLine();
+
+        if (bookIds.contains(id)) {
+            System.out.println("Book ID already exists!");
+            return;
+        }
+
+        System.out.print("Title: ");
+        String title = sc.nextLine();
+
+        System.out.print("Author: ");
+        String author = sc.nextLine();
+
+        System.out.print("Genre: ");
+        String genre = sc.nextLine();
+
+        System.out.print("Publication Year: ");
+        int year = sc.nextInt();
+
+        System.out.print("Quantity: ");
+        int stock = sc.nextInt();
+        sc.nextLine();
+
+        bookIds.add(id);
+        bookTitles.add(title);
+        bookAuthors.add(author);
+        bookGenres.add(genre);
+        bookYears.add(year);
+        bookStocks.add(stock);
+        borrowCounts.add(0);
+
+        System.out.println("Add book successfully!");
+    }
+
+    static void viewBooks() {
+
+        System.out.println("\n===== BOOK LIST =====");
+
+        for (int i = 0; i < bookIds.size(); i++) {
+            System.out.println("ID: " + bookIds.get(i));
+            System.out.println("Title: " + bookTitles.get(i));
+            System.out.println("Author: " + bookAuthors.get(i));
+            System.out.println("Genre: " + bookGenres.get(i));
+            System.out.println("Year: " + bookYears.get(i));
+            System.out.println("Stock: " + bookStocks.get(i));
+            System.out.println("----------------------");
+        }
+    }
+
+    static void searchBook() {
+
+        System.out.print("Enter title: ");
+        String keyword = sc.nextLine();
+
+        for (int i = 0; i < bookIds.size(); i++) {
+
+            if (bookTitles.get(i).toLowerCase().contains(keyword.toLowerCase())) {
+
+                System.out.println("Found:");
+                System.out.println(bookTitles.get(i));
+            }
+        }
+    }
+
+    static void updateBook() {
+
+        System.out.print("Enter Book ID: ");
+        String id = sc.nextLine();
+
+        int index = bookIds.indexOf(id);
+
+        if (index == -1) {
+            System.out.println("Book not found!");
+            return;
+        }
+
+        System.out.print("New Title: ");
+        bookTitles.set(index, sc.nextLine());
+
+        System.out.print("New Author: ");
+        bookAuthors.set(index, sc.nextLine());
+
+        System.out.print("New Genre: ");
+        bookGenres.set(index, sc.nextLine());
+
+        System.out.println("Updated successfully!");
+    }
+
+    static void removeBook() {
+
+        System.out.print("Enter Book ID: ");
+        String id = sc.nextLine();
+
+        int index = bookIds.indexOf(id);
+
+        if (index == -1) {
+            System.out.println("Book not found!");
+            return;
+        }
+
+        bookIds.remove(index);
+        bookTitles.remove(index);
+        bookAuthors.remove(index);
+        bookGenres.remove(index);
+        bookYears.remove(index);
+        bookStocks.remove(index);
+        borrowCounts.remove(index);
+
+        System.out.println("Book removed!");
+    }
+
+    // ================= MEMBER MENU =================
+    static void manageMembers() {
+
+        int choice;
+
+        do {
+            System.out.println("\n===== MEMBER MANAGEMENT =====");
+            System.out.println("1. Add Member");
+            System.out.println("2. View Members");
+            System.out.println("3. Search Member");
+            System.out.println("4. Update Member");
+            System.out.println("5. Remove Member");
+            System.out.println("0. Back");
+            System.out.print("Choose: ");
+            choice = sc.nextInt();
+            sc.nextLine();
+
+            switch (choice) {
+                case 1:
+                    addMember();
+                    break;
+                case 2:
+                    viewMembers();
+                    break;
+                case 3:
+                    searchMember();
+                    break;
+                case 4:
+                    updateMember();
+                    break;
+                case 5:
+                    removeMember();
+                    break;
+            }
+
+        } while (choice != 0);
+    }
+
+    static void addMember() {
+
+        System.out.print("Member ID: ");
+        String id = sc.nextLine();
+
+        if (memberIds.contains(id)) {
+            System.out.println("Member ID already exists!");
+            return;
+        }
+
+        System.out.print("Name: ");
+        String name = sc.nextLine();
+
+        System.out.print("Phone: ");
+        String phone = sc.nextLine();
+
+        System.out.print("Email: ");
+        String email = sc.nextLine();
+
+        memberIds.add(id);
+        memberNames.add(name);
+        memberPhones.add(phone);
+        memberEmails.add(email);
+        memberBorrowed.add(0);
+
+        System.out.println("Add member successfully!");
+    }
+
+    static void viewMembers() {
+
+        System.out.println("\n===== MEMBER LIST =====");
+
+        for (int i = 0; i < memberIds.size(); i++) {
+
+            System.out.println("ID: " + memberIds.get(i));
+            System.out.println("Name: " + memberNames.get(i));
+            System.out.println("Phone: " + memberPhones.get(i));
+            System.out.println("Email: " + memberEmails.get(i));
+            System.out.println("----------------------");
+        }
+    }
+
+    static void searchMember() {
+
+        System.out.print("Enter member name: ");
+        String keyword = sc.nextLine();
+
+        for (int i = 0; i < memberNames.size(); i++) {
+
+            if (memberNames.get(i).toLowerCase().contains(keyword.toLowerCase())) {
+
+                System.out.println("Found: " + memberNames.get(i));
+            }
+        }
+    }
+
+    static void updateMember() {
+
+        System.out.print("Enter Member ID: ");
+        String id = sc.nextLine();
+
+        int index = memberIds.indexOf(id);
+
+        if (index == -1) {
+            System.out.println("Member not found!");
+            return;
+        }
+
+        System.out.print("New Name: ");
+        memberNames.set(index, sc.nextLine());
+
+        System.out.print("New Phone: ");
+        memberPhones.set(index, sc.nextLine());
+
+        System.out.println("Updated successfully!");
+    }
+
+    static void removeMember() {
+
+        System.out.print("Enter Member ID: ");
+        String id = sc.nextLine();
+
+        int index = memberIds.indexOf(id);
+
+        if (index == -1) {
+            System.out.println("Member not found!");
+            return;
+        }
+
+        memberIds.remove(index);
+        memberNames.remove(index);
+        memberPhones.remove(index);
+        memberEmails.remove(index);
+        memberBorrowed.remove(index);
+
+        System.out.println("Member removed!");
+    }
+
+    // ================= BORROW MENU =================
+    static void borrowingMenu() {
+
+        int choice;
+
+        do {
+            System.out.println("\n===== BORROWING MANAGEMENT =====");
+            System.out.println("1. Borrow Book");
+            System.out.println("2. Return Book");
+            System.out.println("3. View Borrowed Books");
+            System.out.println("0. Back");
+            System.out.print("Choose: ");
+            choice = sc.nextInt();
+            sc.nextLine();
+
+            switch (choice) {
+                case 1:
+                    borrowBook();
+                    break;
+                case 2:
+                    returnBook();
+                    break;
+                case 3:
+                    viewBorrowedBooks();
+                    break;
+            }
+
+        } while (choice != 0);
+    }
+
+    static void borrowBook() {
+
+        System.out.print("Book ID: ");
+        String bookId = sc.nextLine();
+
+        System.out.print("Member ID: ");
+        String memberId = sc.nextLine();
+
+        int bookIndex = bookIds.indexOf(bookId);
+        int memberIndex = memberIds.indexOf(memberId);
+
+        if (bookIndex == -1) {
+            System.out.println("Book not found!");
+            return;
+        }
+
+        if (memberIndex == -1) {
+            System.out.println("Member not found!");
+            return;
+        }
+
+        if (bookStocks.get(bookIndex) <= 0) {
+            System.out.println("Book out of stock!");
+            return;
+        }
+
+        if (memberBorrowed.get(memberIndex) >= 3) {
+            System.out.println("Borrow limit exceeded!");
+            return;
+        }
+
+        System.out.print("Borrow Date: ");
+        String date = sc.nextLine();
+
+        borrowBookIds.add(bookId);
+        borrowMemberIds.add(memberId);
+        borrowDates.add(date);
+        returnDates.add("");
+        returned.add(false);
+
+        bookStocks.set(bookIndex, bookStocks.get(bookIndex) - 1);
+        memberBorrowed.set(memberIndex, memberBorrowed.get(memberIndex) + 1);
+
+        borrowCounts.set(bookIndex, borrowCounts.get(bookIndex) + 1);
+
+        System.out.println("Borrow successful!");
+    }
+
+    static void returnBook() {
+
+        System.out.print("Book ID: ");
+        String bookId = sc.nextLine();
+
+        for (int i = 0; i < borrowBookIds.size(); i++) {
+
+            if (borrowBookIds.get(i).equals(bookId) && !returned.get(i)) {
+
+                System.out.print("Return Date: ");
+                String date = sc.nextLine();
+
+                returnDates.set(i, date);
+                returned.set(i, true);
+
+                int bookIndex = bookIds.indexOf(bookId);
+                int memberIndex = memberIds.indexOf(borrowMemberIds.get(i));
+
+                bookStocks.set(bookIndex, bookStocks.get(bookIndex) + 1);
+                memberBorrowed.set(memberIndex, memberBorrowed.get(memberIndex) - 1);
+
+                System.out.println("Return successful!");
+                return;
+            }
+        }
+
+        System.out.println("Borrow record not found!");
+    }
+
+    static void viewBorrowedBooks() {
+
+        System.out.println("\n===== BORROWED BOOKS =====");
+
+        for (int i = 0; i < borrowBookIds.size(); i++) {
+
+            if (!returned.get(i)) {
+
+                System.out.println("Book ID: " + borrowBookIds.get(i));
+                System.out.println("Member ID: " + borrowMemberIds.get(i));
+                System.out.println("Borrow Date: " + borrowDates.get(i));
+                System.out.println("----------------------");
+            }
+        }
+    }
+
+    // ================= REPORT MENU =================
+    static void reportsMenu() {
+
+        System.out.println("\n===== REPORTS =====");
+
+        mostPopularBooks();
+        topMembers();
+    }
+
+    static void mostPopularBooks() {
+
+        System.out.println("\nMost Popular Books:");
+
+        for (int i = 0; i < bookIds.size(); i++) {
+
+            System.out.println(bookTitles.get(i)
+                    + " - Borrowed: "
+                    + borrowCounts.get(i) + " times");
+        }
+    }
+
+    static void topMembers() {
+
+        System.out.println("\nTop Members:");
+
+        for (int i = 0; i < memberIds.size(); i++) {
+
+            System.out.println(memberNames.get(i)
+                    + " - Current Borrowed: "
+                    + memberBorrowed.get(i));
+        }
+    }
+}# Library-Management-System
